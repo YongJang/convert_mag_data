@@ -102,20 +102,32 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
                 temp_sum = 0
                 temp_index = 0
                 if i == 0 :                         # if point is a edge of left side
-                    temp_sum += sum_equal_point[i + 1][j]
-                    temp_index += count_equal_point[i + 1][j]
+                    find_not_zero = i + 1
+                    while (count_equal_point[find_not_zero][j] == 0) :
+                        find_not_zero += 1
+                    temp_sum += sum_equal_point[find_not_zero][j]
+                    temp_index += count_equal_point[find_not_zero][j]
                 elif i == number_of_x_point - 1 :   # if point is a edge of right side
-                    temp_sum += sum_equal_point[i - 1][j]
-                    temp_index += count_equal_point[i - 1][j]
+                    find_not_zero = i - 1
+                    while (count_equal_point[find_not_zero][j] == 0) :
+                        find_not_zero -= 1
+                    temp_sum += sum_equal_point[find_not_zero][j]
+                    temp_index += count_equal_point[find_not_zero][j]
                 else :
                     temp_sum += sum_equal_point[i + 1][j] + sum_equal_point[i - 1][j]
                     temp_index += count_equal_point[i + 1][j] + count_equal_point[i - 1][j]
                 if j == 0 :                         # if point is a edge of top side
-                    temp_sum += sum_equal_point[i][j + 1]
-                    temp_index += count_equal_point[i][j + 1]
+                    find_not_zero = j + 1
+                    while (count_equal_point[i][find_not_zero] == 0) :
+                        find_not_zero += 1
+                    temp_sum += sum_equal_point[i][find_not_zero]
+                    temp_index += count_equal_point[i][find_not_zero]
                 elif j == number_of_y_point - 1 :   # if point is a edge of bottom side
-                    temp_sum += sum_equal_point[i][j - 1]
-                    temp_index += count_equal_point[i][j - 1]
+                    find_not_zero = j - 1
+                    while (count_equal_point[i][find_not_zero] == 0) :
+                        find_not_zero -= 1
+                    temp_sum += sum_equal_point[i][find_not_zero]
+                    temp_index += count_equal_point[i][find_not_zero]
                 else :
                     temp_sum += sum_equal_point[i][j + 1] + sum_equal_point[i][j - 1]
                     temp_index += count_equal_point[i][j + 1] + count_equal_point[i][j - 1]
@@ -125,6 +137,8 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
                 divided_y.append(j)
                 round_x.append(i)
                 round_y.append(j)
+                print(i)
+                print(j)
                 mag_data_list.append(temp_sum / temp_index)
 
     # Way 1. nearest point as a reference point
@@ -173,11 +187,11 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
     f_average.close()
 
 def main() :
-    file_path = "C:\MgData\engineer\engineerSL.csv"                             # input data
-    file_name_nearest = "C:\MgData\engineer\engineerSL_convert_nearest.csv"     # nearest output data
-    file_name_average = "C:\MgData\engineer\engineerSL_convert_average.csv"     # average output data
+    file_path = "C:\MgData\engineer\engineerPDR12_outofbounds_del_complete.csv"                             # input data
+    file_name_nearest = "C:\MgData\engineer\engineerPDR_12_convert_nearest.csv"     # nearest output data
+    file_name_average = "C:\MgData\engineer\engineerPDR_12_convert_average.csv"     # average output data
     location = "engineering"                                                    # measured location
-    measurement_tool = "sl"                                                     # measurement tool
+    measurement_tool = "pdr"                                                     # measurement tool
 
     convert_data(file_path, file_name_nearest, file_name_average, location, measurement_tool)
 
