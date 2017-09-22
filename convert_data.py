@@ -89,12 +89,18 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
 
     # if any point is not assigned, fill the point with average value from adjacent points
     """
-    It has a still problem. Because it fill the blank point from top to bottom and left to right.
+    It has still problems. Because it fill the blank point from top to bottom and left to right.
     so, the filled values are more affected by top and left values.
     e.g. 1 1 2 3
          2 0 0 5
          4 0 0 7
          6 7 8 9    the 0 values(blank) tend to be assigned small values instead of big values.
+    second, the blank data is affected by same row and columm values not nearest values.
+    e.g. 0 0 0 0 2
+         0 9 8 6 3
+         0 8 7 4 4
+         0 6 6 5 4
+         1 3 4 4 3   the 0 value at (0, 0) is affected by (0, 4) and (4, 0), not the nearest value at (1, 1).
     """
     for i in range(number_of_x_point) :
         for j in range(number_of_y_point) :
