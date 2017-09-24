@@ -12,7 +12,7 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
 
     if location == "engineering" :
         number_of_x_point = 17
-        number_of_y_point = 38
+        number_of_y_point = 37
         # pdr data divided by sl data --> x = 2.78, y = 2.86
         if measurement_tool == "sl" :
             start_point_x = 600 * 2.78
@@ -87,6 +87,7 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
         sum_equal_point[round_x[i]][round_y[i]] += mag_data[i]
         count_equal_point[round_x[i]][round_y[i]] = count_equal_point[round_x[i]][round_y[i]] + 1
 
+
     # if any point is not assigned, fill the point with average value from adjacent points
     """
     It has still problems. Because it fill the blank point from top to bottom and left to right.
@@ -95,6 +96,7 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
          2 0 0 5
          4 0 0 7
          6 7 8 9    the 0 values(blank) tend to be assigned small values instead of big values.
+
     second, the blank data is affected by same row and columm values not nearest values.
     e.g. 0 0 0 0 2
          0 9 8 6 3
@@ -102,11 +104,12 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
          0 6 6 5 4
          1 3 4 4 3   the 0 value at (0, 0) is affected by (0, 4) and (4, 0), not the nearest value at (1, 1).
     """
+
     for i in range(number_of_x_point) :
         for j in range(number_of_y_point) :
             if count_equal_point[i][j] <= 0 :       # if any point is not assigned value
-                temp_sum = 0
-                temp_index = 0
+                temp_sum = sum_equal_point[i][j]
+                temp_index = count_equal_point[i][j]
                 if i == 0 :                         # if point is a edge of left side
                     find_not_zero = i + 1
                     while (count_equal_point[find_not_zero][j] == 0) :
@@ -143,8 +146,9 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
                 divided_y.append(j)
                 round_x.append(i)
                 round_y.append(j)
-                print(i)
-                print(j)
+                # print(i)
+                # print(j)
+                # print("(",i,", ",j,")",(temp_sum / temp_index))
                 mag_data_list.append(temp_sum / temp_index)
 
     # Way 1. nearest point as a reference point
@@ -161,6 +165,7 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
     nearest_x = []
     nearest_y = []
     nearest_data = []
+
 
     for i in range(number_of_x_point) :
         for j in range(number_of_y_point) :
@@ -193,9 +198,9 @@ def convert_data(file_path, file_name_nearest, file_name_average, location, meas
     f_average.close()
 
 def main() :
-    file_path = "C:\MgData\engineer\engineerPDR12_outofbounds_del_complete.csv"                             # input data
-    file_name_nearest = "C:\MgData\engineer\engineerPDR_12_convert_nearest.csv"     # nearest output data
-    file_name_average = "C:\MgData\engineer\engineerPDR_12_convert_average.csv"     # average output data
+    file_path = "C:\MgData\engineer\engineerPDR2_outofbounds_del_complete.csv"                             # input data
+    file_name_nearest = "C:\MgData\engineer\engineerPDR_RESET_2_convert_nearest.csv"     # nearest output data
+    file_name_average = "C:\MgData\engineer\engineerPDR_RESET_2_convert_average.csv"     # average output data
     location = "engineering"                                                    # measured location
     measurement_tool = "pdr"                                                     # measurement tool
 
